@@ -15,6 +15,14 @@ export interface SoundSettings {
   errors: string
 }
 
+export interface LocalAISettings {
+  enabled: boolean
+  modelPath: string
+  contextLength: number
+  gpuLayers: number
+  priority: "high" | "normal" | "low"
+}
+
 export interface Settings {
   general: {
     autoSave: boolean
@@ -33,6 +41,7 @@ export interface Settings {
   }
   notifications: NotificationSettings
   sounds: SoundSettings
+  localAI: LocalAISettings
 }
 
 const defaultSettings: Settings = {
@@ -60,6 +69,13 @@ const defaultSettings: Settings = {
     agent: "staplebops-01",
     permissions: "staplebops-02",
     errors: "nope-03",
+  },
+  localAI: {
+    enabled: false,
+    modelPath: "",
+    contextLength: 4096,
+    gpuLayers: 0,
+    priority: "normal",
   },
 }
 
@@ -170,6 +186,28 @@ export const { use: useSettings, provider: SettingsProvider } = createSimpleCont
         errors: createMemo(() => store.sounds?.errors ?? defaultSettings.sounds.errors),
         setErrors(value: string) {
           setStore("sounds", "errors", value)
+        },
+      },
+      localAI: {
+        enabled: createMemo(() => store.localAI?.enabled ?? defaultSettings.localAI.enabled),
+        setEnabled(value: boolean) {
+          setStore("localAI", "enabled", value)
+        },
+        modelPath: createMemo(() => store.localAI?.modelPath ?? defaultSettings.localAI.modelPath),
+        setModelPath(value: string) {
+          setStore("localAI", "modelPath", value)
+        },
+        contextLength: createMemo(() => store.localAI?.contextLength ?? defaultSettings.localAI.contextLength),
+        setContextLength(value: number) {
+          setStore("localAI", "contextLength", value)
+        },
+        gpuLayers: createMemo(() => store.localAI?.gpuLayers ?? defaultSettings.localAI.gpuLayers),
+        setGpuLayers(value: number) {
+          setStore("localAI", "gpuLayers", value)
+        },
+        priority: createMemo(() => store.localAI?.priority ?? defaultSettings.localAI.priority),
+        setPriority(value: "high" | "normal" | "low") {
+          setStore("localAI", "priority", value)
         },
       },
     }

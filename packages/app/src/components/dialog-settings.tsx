@@ -8,6 +8,7 @@ import { SettingsGeneral } from "./settings-general"
 import { SettingsKeybinds } from "./settings-keybinds"
 import { SettingsProviders } from "./settings-providers"
 import { SettingsModels } from "./settings-models"
+import { SettingsLocalAI } from "./settings-local-ai"
 
 export const DialogSettings: Component = () => {
   const language = useLanguage()
@@ -45,6 +46,10 @@ export const DialogSettings: Component = () => {
                       <Icon name="models" />
                       {language.t("settings.models.title")}
                     </Tabs.Trigger>
+                    <Tabs.Trigger value="local-ai">
+                      <Icon name="cpu" />
+                      {language.t("settings.localAI.title") || "本地AI"}
+                    </Tabs.Trigger>
                   </div>
                 </div>
               </div>
@@ -66,6 +71,9 @@ export const DialogSettings: Component = () => {
         </Tabs.Content>
         <Tabs.Content value="models" class="no-scrollbar">
           <SettingsModels />
+        </Tabs.Content>
+        <Tabs.Content value="local-ai" class="no-scrollbar">
+          <SettingsLocalAI />
         </Tabs.Content>
         {/* <Tabs.Content value="agents" class="no-scrollbar"> */}
         {/*   <SettingsAgents /> */}
