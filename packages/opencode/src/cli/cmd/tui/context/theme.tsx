@@ -36,6 +36,9 @@ import vercel from "./theme/vercel.json" with { type: "json" }
 import vesper from "./theme/vesper.json" with { type: "json" }
 import zenburn from "./theme/zenburn.json" with { type: "json" }
 import carbonfox from "./theme/carbonfox.json" with { type: "json" }
+import fastcode from "./theme/fastcode.json" with { type: "json" }
+import fastcodeLight from "./theme/fastcode-light.json" with { type: "json" }
+import fastcodeSystem from "./theme/fastcode-system.json" with { type: "json" }
 import { useKV } from "./kv"
 import { useRenderer } from "@opentui/solid"
 import { createStore, produce } from "solid-js/store"
@@ -171,6 +174,9 @@ export const DEFAULT_THEMES: Record<string, ThemeJson> = {
   vercel,
   zenburn,
   carbonfox,
+  fastcode,
+  ["fastcode-light"]: fastcodeLight,
+  ["fastcode-system"]: fastcodeSystem,
 }
 
 function resolveTheme(theme: ThemeJson, mode: "dark" | "light") {

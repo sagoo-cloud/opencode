@@ -700,6 +700,13 @@ export namespace Provider {
     const modelsDev = await ModelsDev.get()
     const database = mapValues(modelsDev, fromModelsDevProvider)
 
+    // Inject local AI providers from plugin
+    const { getLocalProviderDefinitions } = await import("../plugin/local-ai")
+    const localProviders = getLocalProviderDefinitions()
+    for (const [providerId, providerInfo] of Object.entries(localProviders)) {
+      database[providerId] = providerInfo
+    }
+
     const disabled = new Set(config.disabled_providers ?? [])
     const enabled = config.enabled_providers ? new Set(config.enabled_providers) : null
 
@@ -1181,6 +1188,16 @@ export namespace Provider {
     const opencodeProvider = await state().then((state) => state.providers["opencode"])
     if (opencodeProvider && opencodeProvider.models["gpt-5-nano"]) {
       return getModel("opencode", "gpt-5-nano")
+    }
+
+    // Check if local AI should be prioritized
+    const { getPreferredLocalModel } = await import("../plugin/local-ai")
+    const localModel = getPreferredLocalModel()
+    if (localModel) {
+      const localProvider = await state().then((state) => state.providers[localModel.providerId])
+      if (localProvider && localProvider.models[localModel.modelId]) {
+        return getModel(localModel.providerId, localModel.modelId)
+      }
     }
 
     return undefined
